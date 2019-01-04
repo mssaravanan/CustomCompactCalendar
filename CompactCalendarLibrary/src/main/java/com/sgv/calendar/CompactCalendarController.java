@@ -66,7 +66,7 @@ class CompactCalendarController {
     private long lastAutoScrollFromFling;
     private boolean useThreeLetterAbbreviation = true;
     private boolean isApplyWeekEndColor = false;
-    private boolean isShowMonthName=false;
+    private boolean isDisplayMonthName=false;
     private boolean isSmoothScrolling;
     private boolean isScrolling;
     private boolean shouldDrawDaysHeader = true;
@@ -95,9 +95,10 @@ class CompactCalendarController {
     private int multiEventIndicatorColor;
     private int currentDayBackgroundColor;
     private int currentDayTextColor;
-    private int calenderTextColor;
+    private int calenderTextColor=Color.BLACK;
     private int selectedDayBackgroundColor;
     private int selectedDayTextColor;
+    private int monthNameTextColor=Color.BLACK;
     private int calenderBackgroundColor = Color.WHITE;
     private int otherMonthDaysTextColor;
     private int weekEndDaysTextColor;
@@ -173,6 +174,9 @@ class CompactCalendarController {
                 circleScale = typedArray.getFloat(R.styleable.CompactCalendarView_compactCalendarCircleScale, circleScale);
                 isShowRowLine = typedArray.getBoolean(R.styleable.CompactCalendarView_compactCalendarDrawRowLine, false);
                 isApplyWeekEndColor = typedArray.getBoolean(R.styleable.CompactCalendarView_compactCalendarApplyWeekEndColor, false);
+                isDisplayMonthName = typedArray.getBoolean(R.styleable.CompactCalendarView_compactCalendarDisplayMonthName, false);
+                monthNameTextColor = typedArray.getColor(R.styleable.CompactCalendarView_compactCalendarMonthNameTextColor, calenderTextColor);
+
             } finally {
                 typedArray.recycle();
             }
@@ -1064,7 +1068,7 @@ class CompactCalendarController {
             }
             float xPosition = widthPerDay * dayColumn + paddingWidth + paddingLeft + accumulatedScrollOffset.x + offset - paddingRight;
             float yPosition;
-            if(dayRow > 0&&isShowMonthName){
+            if(dayRow > 0&&isDisplayMonthName){
                 yPosition = dayRow * heightPerDay + paddingHeight + 100;
             }else{
                 yPosition = dayRow * heightPerDay + paddingHeight;
@@ -1087,7 +1091,13 @@ class CompactCalendarController {
                             dayPaint.setColor(weekEndDaysTextColor);
                         }
                     }
-
+                    if(dayColumn == 6) {
+                        Paint monthPaint = dayPaint;
+                        monthPaint.setColor(monthNameTextColor);
+                        String monthName = currentCalender.getDisplayName(Calendar.MONTH,Calendar.SHORT,Locale.getDefault());
+                        canvas.drawText
+                                (monthName, xPosition, (dayRow * heightPerDay + paddingHeight) + heightPerDay, monthPaint);
+                    }
                     dayPaint.setTypeface(typefaceRegular);
                     canvas.drawText(dayColumnNames[dayColumn].toUpperCase(), xPosition, paddingHeight + 10, dayPaint);
 

@@ -36,6 +36,8 @@
         <attr name="compactCalendarWeekEndDaysTextColor" format="color"/>
         <attr name="compactCalendarWeekDaysTextColor" format="color"/>
         <attr name="compactCalendarRowLineColor" format="color"/>
+        <attr name="compactCalendarMonthNameTextColor" format="color"/>
+
         <attr name="compactCalendarWeekBackgroundStyle"/>
         <attr name="compactCalendarWeekNamesBackgroundColor" format="color"/>
         <attr name="compactCalendarMinYear" format="integer"/>
@@ -43,5 +45,6 @@
         <attr name="compactCalendarCircleScale" format="float"></attr>
         <attr name="compactCalendarDrawRowLine" format="boolean"></attr>
         <attr name="compactCalendarApplyWeekEndColor" format="boolean"></attr>
+        <attr name="compactCalendarDisplayMonthName" format="boolean"></attr>
     </declare-styleable>
 </resources>
