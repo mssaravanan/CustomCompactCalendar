@@ -43,7 +43,9 @@ class CompactCalendarController {
     private int widthPerDay;
     private int monthsScrolledSoFar;
     private int heightPerDay;
-    private int textSize = 30;
+    private int textSize = 13;
+    private int textMonthNameSize = 16;
+    private int textWeekNameSize = 14;
     private int width;
     private int height;
     private int paddingRight;
@@ -108,7 +110,7 @@ class CompactCalendarController {
     private TimeZone timeZone;
     private Context mContext;
     private boolean isShowRowLine = false;
-    private Typeface typefaceRegular, typefaceMedium;
+    private Typeface typefaceDateText, typefaceMonthText,typefaceWeekText;
     /**
      * Only used in onDrawCurrentMonth to temporarily calculate previous month days
      */
@@ -160,15 +162,24 @@ class CompactCalendarController {
                 selectedDayTextColor = typedArray.getColor(R.styleable.CompactCalendarView_compactCalendarSelectedDayTextColor, calenderTextColor);
                 calenderBackgroundColor = typedArray.getColor(R.styleable.CompactCalendarView_compactCalendarBackgroundColor, calenderBackgroundColor);
                 multiEventIndicatorColor = typedArray.getColor(R.styleable.CompactCalendarView_compactCalendarMultiEventIndicatorColor, multiEventIndicatorColor);
-                textSize = typedArray.getDimensionPixelSize(R.styleable.CompactCalendarView_compactCalendarTextSize,
+                textSize = typedArray.getDimensionPixelSize(R.styleable.CompactCalendarView_compactCalendarDateTextSize,
                         (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, textSize, context.getResources().getDisplayMetrics()));
+
+                textWeekNameSize = typedArray.getDimensionPixelSize(R.styleable.CompactCalendarView_compactCalendarWeekTextSize,
+                        (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, textWeekNameSize, context.getResources().getDisplayMetrics()));
+
+                textMonthNameSize = typedArray.getDimensionPixelSize(R.styleable.CompactCalendarView_compactCalendarMonthTextSize,
+                        (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, textMonthNameSize, context.getResources().getDisplayMetrics()));
+
+
+
                 targetHeight = typedArray.getDimensionPixelSize(R.styleable.CompactCalendarView_compactCalendarTargetHeight,
                         (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, targetHeight, context.getResources().getDisplayMetrics()));
                 eventIndicatorStyle = typedArray.getInt(R.styleable.CompactCalendarView_compactCalendarEventIndicatorStyle, SMALL_INDICATOR);
                 currentDayIndicatorStyle = typedArray.getInt(R.styleable.CompactCalendarView_compactCalendarCurrentDayIndicatorStyle, FILL_LARGE_INDICATOR);
                 selectedDayIndicatorStyle = typedArray.getInt(R.styleable.CompactCalendarView_compactCalendarSelectedDayIndicatorStyle, FILL_LARGE_INDICATOR);
 
-                weekNamesBackgroundStyle = typedArray.getInt(R.styleable.CompactCalendarView_compactCalendarSelectedDayIndicatorStyle, FILL);
+                weekNamesBackgroundStyle = typedArray.getInt(R.styleable.CompactCalendarView_compactCalendarWeekBackgroundStyle, FILL);
                 displayOtherMonthDays = typedArray.getBoolean(R.styleable.CompactCalendarView_compactCalendarDisplayOtherMonthDays, displayOtherMonthDays);
                 shouldSelectFirstDayOfMonthOnScroll = typedArray.getBoolean(R.styleable.CompactCalendarView_compactCalendarShouldSelectFirstDayOfMonthOnScroll, shouldSelectFirstDayOfMonthOnScroll);
                 circleScale = typedArray.getFloat(R.styleable.CompactCalendarView_compactCalendarCircleScale, circleScale);
@@ -203,9 +214,10 @@ class CompactCalendarController {
         dayPaint.setTextAlign(Paint.Align.CENTER);
         dayPaint.setStyle(Paint.Style.STROKE);
         dayPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
-        typefaceRegular = ResourcesCompat.getFont(context, R.font.montserrat_regular);
-        typefaceMedium = ResourcesCompat.getFont(context, R.font.montserrat_medium);
-        dayPaint.setTypeface(typefaceMedium);
+        typefaceDateText = ResourcesCompat.getFont(context, R.font.montserrat_regular);
+        typefaceWeekText = ResourcesCompat.getFont(context, R.font.montserrat_medium);
+        typefaceMonthText = ResourcesCompat.getFont(context, R.font.montserrat_medium);
+        dayPaint.setTypeface(typefaceDateText);
         dayPaint.setTextSize(textSize);
         dayPaint.setColor(calenderTextColor);
         dayPaint.getTextBounds("31", 0, "31".length(), textSizeRect);
@@ -430,6 +442,7 @@ class CompactCalendarController {
     void onDraw(Canvas canvas) {
         paddingWidth = widthPerDay / 2;
         paddingHeight = heightPerDay / 2;
+
         calculateXPositionOffset();
 
         if (animationStatus == EXPOSE_CALENDAR_ANIMATION) {
@@ -879,14 +892,17 @@ class CompactCalendarController {
     }
 
     private void drawCalenderWeekNamesBackground(Canvas canvas) {
-        dayPaint.setColor(weekNamesBackgroundColor);
-        dayPaint.setStyle(Paint.Style.STROKE);
-        if (weekNamesBackgroundStyle == 0) {
-            dayPaint.setStyle(Paint.Style.FILL);
+        Paint weekBgPaint = dayPaint;
+        weekBgPaint.setColor(weekNamesBackgroundColor);
+        if (weekNamesBackgroundStyle == 1) {
+            weekBgPaint.setStyle(Paint.Style.FILL);
+        }else {
+            weekBgPaint.setStrokeWidth(2.4f);
+            weekBgPaint.setStyle(Paint.Style.STROKE);
         }
-        dayPaint.setStrokeWidth(2.4f);
-        canvas.drawRect(15, 3, width - 15, getHeightPerDay() - 25, dayPaint);
-        dayPaint.setColor(calenderTextColor);
+        canvas.drawRect(0, paddingHeight/3, width, getHeightPerDay()-paddingHeight/2, weekBgPaint);
+        //canvas.drawRect(, 3, width - 15, getHeightPerDay() - 25, weekBgPaint);
+
     }
 
     private void drawCalenderBackground(Canvas canvas) {
@@ -1023,15 +1039,22 @@ class CompactCalendarController {
         return dayOfWeek;
     }
 
-    void setWeekNameTypeface(Typeface typefaceRegular){
+    void setDateTextTypeface(Typeface typefaceRegular){
         if(typefaceRegular!=null) {
-            this.typefaceRegular = typefaceRegular;
+            this.typefaceDateText = typefaceRegular;
         }
     }
 
-    void setWeekDayTypeface(Typeface typefaceRegular){
+
+    void setWeekTextTypeface(Typeface typefaceRegular){
         if(typefaceRegular!=null) {
-            this.typefaceMedium = typefaceRegular;
+            this.typefaceWeekText = typefaceRegular;
+        }
+    }
+
+    void setMonthTextTypeface(Typeface typefaceRegular){
+        if(typefaceRegular!=null) {
+            this.typefaceMonthText = typefaceRegular;
         }
     }
 
@@ -1067,13 +1090,7 @@ class CompactCalendarController {
                 break;
             }
             float xPosition = widthPerDay * dayColumn + paddingWidth + paddingLeft + accumulatedScrollOffset.x + offset - paddingRight;
-            float yPosition;
-            if(dayRow > 0&&isDisplayMonthName){
-                yPosition = dayRow * heightPerDay + paddingHeight + 100;
-            }else{
-                yPosition = dayRow * heightPerDay + paddingHeight;
-            }
-
+            float yPosition  = dayRow * heightPerDay + paddingHeight;
             if (xPosition >= growFactor && (isAnimatingWithExpose || animationStatus == ANIMATE_INDICATORS) || yPosition >= growFactor) {
                 // don't draw days if animating expose or indicators
                 continue;
@@ -1093,12 +1110,16 @@ class CompactCalendarController {
                     }
                     if(dayColumn == 6) {
                         Paint monthPaint = dayPaint;
+                        monthPaint.setTypeface(typefaceMonthText);
                         monthPaint.setColor(monthNameTextColor);
-                        String monthName = currentCalender.getDisplayName(Calendar.MONTH,Calendar.SHORT,Locale.getDefault());
-                        canvas.drawText
-                                (monthName, xPosition, (dayRow * heightPerDay + paddingHeight) + heightPerDay, monthPaint);
+                        monthPaint.setTextSize(textMonthNameSize);
+                        if(isDisplayMonthName) {
+                            String monthName = currentCalender.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.getDefault());
+                            canvas.drawText(monthName, xPosition, (dayRow * heightPerDay + paddingHeight) + heightPerDay, monthPaint);
+                        }
                     }
-                    dayPaint.setTypeface(typefaceRegular);
+                    dayPaint.setTextSize(textWeekNameSize);
+                    dayPaint.setTypeface(typefaceWeekText);
                     canvas.drawText(dayColumnNames[dayColumn].toUpperCase(), xPosition, paddingHeight + 10, dayPaint);
 
                 }
@@ -1128,6 +1149,8 @@ class CompactCalendarController {
                         // Display day month before
                         dayPaint.setStyle(Paint.Style.FILL);
                         dayPaint.setColor(otherMonthDaysTextColor);
+                        dayPaint.setTypeface(typefaceDateText);
+                        dayPaint.setTextSize(textSize);
                         canvas.drawText(String.valueOf(maximumPreviousMonthDay + day), xPosition, yPosition, dayPaint);
                     }
                 } else if (day > maximumMonthDay) {
@@ -1136,6 +1159,8 @@ class CompactCalendarController {
                         // Display day month after
                         dayPaint.setStyle(Paint.Style.FILL);
                         dayPaint.setColor(otherMonthDaysTextColor);
+                        dayPaint.setTypeface(typefaceDateText);
+                        dayPaint.setTextSize(textSize);
                         canvas.drawText(String.valueOf(day - maximumMonthDay), xPosition, yPosition, dayPaint);
                     }
                 } else {
@@ -1156,7 +1181,8 @@ class CompactCalendarController {
 
                         }
                     }
-                    dayPaint.setTypeface(typefaceMedium);
+                    dayPaint.setTextSize(textSize);
+                    dayPaint.setTypeface(typefaceDateText);
                     canvas.drawText(String.valueOf(day), xPosition, yPosition, dayPaint);
                     //Change 3 : Draw Line
                     if (isShowRowLine) {

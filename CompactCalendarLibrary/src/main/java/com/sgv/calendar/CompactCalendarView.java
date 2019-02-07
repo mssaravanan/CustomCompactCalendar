@@ -18,8 +18,8 @@ public class CompactCalendarView extends View {
     public static final int FILL_LARGE_INDICATOR = 1;
     public static final int NO_FILL_LARGE_INDICATOR = 2;
     public static final int SMALL_INDICATOR = 3;
-    public static final int FILL = 0;
-    public static final int STROKE = 1;
+    public static final int FILL = 1;
+    public static final int STROKE = 2;
     static final int MIN_DISTANCE = 80;
     private float downX, downY, upX, upY;
     private final AnimationHandler animationHandler;
@@ -427,12 +427,17 @@ public class CompactCalendarView extends View {
         this.horizontalScrollEnabled = enableHorizontalScroll;
     }
 
-    public void setWeekNameTypeFace(Typeface weekNameTypeFace){
-        compactCalendarController.setWeekNameTypeface(weekNameTypeFace);
+    public void setDateTextTypeface(Typeface dateTextTypeface){
+        compactCalendarController.setDateTextTypeface(dateTextTypeface);
     }
 
-    public void setWeekDayTypeFace(Typeface weekDayTypeFace){
-        compactCalendarController.setWeekDayTypeface(weekDayTypeFace);
+    public void setWeekTextTypeface(Typeface weekDayTypeFace){
+        compactCalendarController.setWeekTextTypeface(weekDayTypeFace);
+    }
+
+
+    public void setMonthTextTypeface(Typeface weekDayTypeFace){
+        compactCalendarController.setMonthTextTypeface(weekDayTypeFace);
     }
 
 

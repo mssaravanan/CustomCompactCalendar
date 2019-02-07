@@ -1,6 +1,121 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorPrimary">#000000</color>
+    <color name="colorPrimaryDark">#000000</color>
+    <color name="colorAccent">#000000</color>
+    <color name="black">#000000</color>
+    <color name="screen_bg_color">#F5FAFA</color>
+
+    <!--<color name="text_gray_light">#d7d7d7</color>-->
+
+    <color name="colorHeader">#000000</color>
+    <color name="text_gray_light">#dedede</color>
+
+    <color name="text_medium_gray">#D1D1D1</color>
+    <color name="edit_text_medium_gray">#D1D1D1</color>
+    <color name="medium_gray">#545454</color>
+    <color name="text_gray_medium">#6B6B6B</color>
+    <color name="text_gray_dark">#0F0F0F</color>
+    <color name="text_gray_dark_light">#3D3D3D</color>
+    <color name="common_divider">#dfdede</color>
+    <color name="white">#FFFFFF</color>
+    <color name="button_color">#4c4c4c</color>
+    <color name="app_blue_color">#2df1e2</color>
+    <color name="app_medium_blue_color">#006FF6</color>
+    <color name="gray_bg_color">#F7F7F7</color>
+    <color name="bg_gray_medium">#F1F1F1</color>
+    <color name="gray">#FFBEBDBD</color>
+    <color name="red">#FFFF4046</color>
+    <color name="full_trans">#00000000</color>
+    <color name="red_dark">#E4103F</color>
+    <color name="white48">#7AFFFFFF</color>
+    <color name="app_red_color">#E4103F</color>
+
+
+    <color name="bg">#0e0e12</color>
+    <color name="app_bg">#0e0e12</color>
+    <color name="selected_tab_color">#2df1e2</color>
+
+    <color name="snack_bar_success">#2A9100</color>
+    <color name="snack_bar_warning">#C8A209</color>
+    <color name="snack_bar_info">#2A7895</color>
+    <color name="snack_bar_failure">#C80909</color>
+    <color name="et_text">#FFFFFF</color>
+    <color name="et_bg">#27272A</color>
+
+    <color name="white_color">#FFFFFF</color>
+    <color name="text_color_grey">#6B6B6B</color>
+    <color name="textview_bg">#f9f9f9</color>
+
+
+    <color name="tv_medium_black">#172735</color>
+
+    <color name="rating_bar_yellow_color">#FFC53D</color>
+    <color name="rating_bar_bg_color">#172735</color>
+    <color name="text_row_color">#172735</color>
+    <color name="btn_dark_color">#545454</color>
+    <color name="btn_dark_color_border">#707070</color>
+    <color name="btn_light_med_gray">#BCBCBC</color>
+    <color name="job_green">#00B500</color>
+    <color name="job_red">#FF0303</color>
+    <color name="job_blue">#3500CC</color>
+    <color name="job_grey">#A5A5B5</color>
+    <color name="job_purple">#800080</color>
+    <color name="color_1">#9C9C9C</color>
+    <color name="color_2">#FAFAFA</color>
+    <color name="color_3">#f1f1f1</color>
+    <color name="app_background">#F5FAFA</color>
+    <color name="app_btn_color">#1AF2E6</color>
+    <color name="app_sub_heading_color">#A5A5B5</color>
+    <color name="color_4">#F5FAFA</color>
+
+    <color name="sub_text_hint_grey_color">#A5A5B5</color>
+    <color name="text_hint_color">#d1d1d1</color>
+    <color name="app_text_light_black_color">#1D1D46</color>
+    <color name="app_divider_color">#DEDEDE</color>
+
+    <color name="color_5">#E4103F</color>
+    <color name="color_6">#1D1D46</color>
+    <color name="color_7">#1AF2E6</color>
+    <color name="calender_current_color">#4b1af2e6</color>
+    <color name="color_8">#EFEFEF</color>
+    <color name="color_9">#08141F</color>
+    <color name="color_10">#F0F0F0</color>
+
+    <color name="female_color_code">#ff2d55</color>
+
+    <color name="light_blue">#F5FAFA</color>
+    <color name="line_grey">#A5A5B5</color>
+    <color name="back_red">#E4103F</color>
+    <color name="tv_dark_black">#1D1D46</color>
+    <color name="medium_blue">#1AF2E6</color>
+    <color name="tv_dull_black">#323233</color>
+    <color name="line_light_grey">#EFEFF3</color>
+    <color name="light_grey">#F0F1F5</color>
+    <color name="ed_hint">#D1D1D1</color>
+
+    <!--Week Calender View-->
+    <color name="blue_dark">#018091</color>
+    <color name="green">#669900</color>
+    <color name="yellow">#e1e420</color>
+
+
+    <color name="bg_glass">#CCffffff</color>
+
+    <color name="fr_glass">#40ffffff</color>
+
+    <color name="bg_male">#3b90ff</color>
+    <color name="bg_female">#FF39A9</color>
+    <color name="bg_other">#1D1D46</color>
+
+
+    <color name="splash_bg">#51274B</color>
+    <color name="splash_bg_50">#8051274B</color>
+
+    <color name="view_bg">#dedede</color>
+    <color name="navy_blue">#005DCE</color>
+    <color name="semi_transparent">#85000000</color>
+
+    <color name="clear_all_tv">#007AFF</color>
+    <color name="financial_view">#C7C7CC</color>
 </resources>
