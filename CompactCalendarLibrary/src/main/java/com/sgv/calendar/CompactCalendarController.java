@@ -900,7 +900,7 @@ class CompactCalendarController {
             weekBgPaint.setStrokeWidth(2.4f);
             weekBgPaint.setStyle(Paint.Style.STROKE);
         }
-        canvas.drawRect(0, paddingHeight/3, width, getHeightPerDay()-paddingHeight/2, weekBgPaint);
+        canvas.drawRect(0, 0, width, getHeightPerDay()-paddingHeight/2, weekBgPaint);
         //canvas.drawRect(, 3, width - 15, getHeightPerDay() - 25, weekBgPaint);
 
     }
@@ -1104,23 +1104,21 @@ class CompactCalendarController {
                     dayPaint.setColor(weekDaysTextColor);
                     //change 1 : Week end day color
                     if (isApplyWeekEndColor) {
-                        if (dayColumn == 5 || dayColumn == 6) {
+                        if (dayColumn == Calendar.SUNDAY-1 || dayColumn == Calendar.SATURDAY-1) {
                             dayPaint.setColor(weekEndDaysTextColor);
                         }
                     }
-                    if(dayColumn == 6) {
+                    if(dayColumn == 6&&isDisplayMonthName) {
                         Paint monthPaint = dayPaint;
                         monthPaint.setTypeface(typefaceMonthText);
                         monthPaint.setColor(monthNameTextColor);
                         monthPaint.setTextSize(textMonthNameSize);
-                        if(isDisplayMonthName) {
                             String monthName = currentCalender.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.getDefault());
                             canvas.drawText(monthName, xPosition, (dayRow * heightPerDay + paddingHeight) + heightPerDay, monthPaint);
-                        }
                     }
                     dayPaint.setTextSize(textWeekNameSize);
                     dayPaint.setTypeface(typefaceWeekText);
-                    canvas.drawText(dayColumnNames[dayColumn].toUpperCase(), xPosition, paddingHeight + 10, dayPaint);
+                    canvas.drawText(dayColumnNames[dayColumn].toUpperCase(), xPosition, paddingHeight, dayPaint);
 
                 }
             } else {

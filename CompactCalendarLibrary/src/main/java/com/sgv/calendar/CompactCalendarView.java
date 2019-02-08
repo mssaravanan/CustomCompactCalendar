@@ -176,7 +176,7 @@ public class CompactCalendarView extends View {
         return compactCalendarController.getFirstDayOfCurrentMonth();
     }
 
-    public Date getSecectedDayOfCurrentMonth(){
+    public Date getSelectedDayOfCurrentMonth(){
         return compactCalendarController.getSelectedDate();
     }
 
