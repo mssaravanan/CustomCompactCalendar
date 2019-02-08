@@ -43,7 +43,10 @@
         <attr name="compactCalendarWeekBackgroundStyle"/>
         <attr name="compactCalendarWeekNamesBackgroundColor" format="color"/>
         <attr name="compactCalendarMinYear" format="integer"/>
+
         <attr name="compactCalendarMaxYear" format="integer"/>
+        <attr name="compactCalendarEventCircleRadius" format="float"/>
+        <attr name="compactCalendarEventCircleOverlap" format="boolean"/>
         <attr name="compactCalendarCircleScale" format="float"></attr>
         <attr name="compactCalendarDrawRowLine" format="boolean"></attr>
         <attr name="compactCalendarApplyWeekEndColor" format="boolean"></attr>

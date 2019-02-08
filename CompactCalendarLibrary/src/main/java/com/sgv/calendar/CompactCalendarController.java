@@ -30,6 +30,8 @@ class CompactCalendarController {
     private static final int DAYS_IN_WEEK = 7;
     private static final float SNAP_VELOCITY_DIP_PER_SECOND = 400;
     private static final float ANIMATION_SCREEN_SET_DURATION_MILLIS = 700;
+    public int minYear = Calendar.getInstance().get(Calendar.YEAR);
+    public int maxYear = 2050;
     //Line Color
     Paint rowLinePaint = new Paint();
     private int eventIndicatorStyle = SMALL_INDICATOR;
@@ -46,6 +48,7 @@ class CompactCalendarController {
     private int textSize = 13;
     private int textMonthNameSize = 16;
     private int textWeekNameSize = 14;
+    private float eventIndicatiorRadius=2.0f;
     private int width;
     private int height;
     private int paddingRight;
@@ -68,7 +71,7 @@ class CompactCalendarController {
     private long lastAutoScrollFromFling;
     private boolean useThreeLetterAbbreviation = true;
     private boolean isApplyWeekEndColor = false;
-    private boolean isDisplayMonthName=false;
+    private boolean isDisplayMonthName = false;
     private boolean isSmoothScrolling;
     private boolean isScrolling;
     private boolean shouldDrawDaysHeader = true;
@@ -91,16 +94,14 @@ class CompactCalendarController {
     private Paint background = new Paint();
     private Rect textSizeRect;
     private String[] dayColumnNames;
-    public int minYear = Calendar.getInstance().get(Calendar.YEAR);
-    public int maxYear = 2050;
     // colors
     private int multiEventIndicatorColor;
     private int currentDayBackgroundColor;
     private int currentDayTextColor;
-    private int calenderTextColor=Color.BLACK;
+    private int calenderTextColor = Color.BLACK;
     private int selectedDayBackgroundColor;
     private int selectedDayTextColor;
-    private int monthNameTextColor=Color.BLACK;
+    private int monthNameTextColor = Color.BLACK;
     private int calenderBackgroundColor = Color.WHITE;
     private int otherMonthDaysTextColor;
     private int weekEndDaysTextColor;
@@ -110,7 +111,8 @@ class CompactCalendarController {
     private TimeZone timeZone;
     private Context mContext;
     private boolean isShowRowLine = false;
-    private Typeface typefaceDateText, typefaceMonthText,typefaceWeekText;
+    private boolean isEventOverlap=false;
+    private Typeface typefaceDateText, typefaceMonthText, typefaceWeekText;
     /**
      * Only used in onDrawCurrentMonth to temporarily calculate previous month days
      */
@@ -172,7 +174,6 @@ class CompactCalendarController {
                         (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, textMonthNameSize, context.getResources().getDisplayMetrics()));
 
 
-
                 targetHeight = typedArray.getDimensionPixelSize(R.styleable.CompactCalendarView_compactCalendarTargetHeight,
                         (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, targetHeight, context.getResources().getDisplayMetrics()));
                 eventIndicatorStyle = typedArray.getInt(R.styleable.CompactCalendarView_compactCalendarEventIndicatorStyle, SMALL_INDICATOR);
@@ -187,7 +188,8 @@ class CompactCalendarController {
                 isApplyWeekEndColor = typedArray.getBoolean(R.styleable.CompactCalendarView_compactCalendarApplyWeekEndColor, false);
                 isDisplayMonthName = typedArray.getBoolean(R.styleable.CompactCalendarView_compactCalendarDisplayMonthName, false);
                 monthNameTextColor = typedArray.getColor(R.styleable.CompactCalendarView_compactCalendarMonthNameTextColor, calenderTextColor);
-
+                eventIndicatiorRadius =typedArray.getFloat(R.styleable.CompactCalendarView_compactCalendarEventCircleRadius,eventIndicatiorRadius);
+                isEventOverlap=typedArray.getBoolean(R.styleable.CompactCalendarView_compactCalendarEventCircleOverlap, false);
             } finally {
                 typedArray.recycle();
             }
@@ -235,7 +237,7 @@ class CompactCalendarController {
         xIndicatorOffset = 2.5f * screenDensity;
 
         //scale small indicator by screen density
-        smallIndicatorRadius = 1.5f * screenDensity;
+        smallIndicatorRadius = eventIndicatiorRadius * screenDensity;
 
         //just set a default growFactor to draw full calendar when initialised
         growFactor = Integer.MAX_VALUE;
@@ -503,11 +505,6 @@ class CompactCalendarController {
         }
     }
 
-    public void setSelectedDate(int dayOfMonth) {
-        calendarWithFirstDayOfMonth.add(Calendar.DATE, dayOfMonth);
-        currentCalender.setTimeInMillis(calendarWithFirstDayOfMonth.getTimeInMillis());
-    }
-
     // Add a little leeway buy checking if amount scrolled is almost same as expected scroll
     // as it maybe off by a few pixels
     private boolean isScrolling() {
@@ -524,6 +521,11 @@ class CompactCalendarController {
 
     public Date getSelectedDate() {
         return currentCalender.getTime();
+    }
+
+    public void setSelectedDate(int dayOfMonth) {
+        calendarWithFirstDayOfMonth.add(Calendar.DATE, dayOfMonth);
+        currentCalender.setTimeInMillis(calendarWithFirstDayOfMonth.getTimeInMillis());
     }
 
     boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
@@ -896,11 +898,11 @@ class CompactCalendarController {
         weekBgPaint.setColor(weekNamesBackgroundColor);
         if (weekNamesBackgroundStyle == 1) {
             weekBgPaint.setStyle(Paint.Style.FILL);
-            canvas.drawRect(0, 0, width, getHeightPerDay()-paddingHeight/2, weekBgPaint);
-        }else {
+            canvas.drawRect(0, 0, width, getHeightPerDay() - paddingHeight / 2, weekBgPaint);
+        } else {
             weekBgPaint.setStrokeWidth(2.4f);
             weekBgPaint.setStyle(Paint.Style.STROKE);
-            canvas.drawRect(10, 10, width-10, (getHeightPerDay()-paddingHeight/2)-10, weekBgPaint);
+            canvas.drawRect(10, 10, width - 10, (getHeightPerDay() - paddingHeight / 2) - 10, weekBgPaint);
         }
 
         //canvas.drawRect(, 3, width - 15, getHeightPerDay() - 25, weekBgPaint);
@@ -968,18 +970,18 @@ class CompactCalendarController {
                             //yPosition += indicatorOffset;
                         }
 
-                        if (eventsList.size() == 3) {
-                            drawThreeEvents(canvas, xPosition, yPosition, eventsList);
-                            //drawTwoEvents(canvas, xPosition, yPosition, eventsList);
-                        } else if (eventsList.size() == 2) {
-                            drawTwoEvents(canvas, xPosition, yPosition, eventsList);
-                        } else if (eventsList.size() == 1) {
-                            drawSingleEvent(canvas, xPosition, yPosition, eventsList);
-                        } else if (eventsList.size() == 4) {
-                            drawFourEvents(canvas, xPosition, yPosition, eventsList);
-                        } else if (eventsList.size() == 5) {
-                            drawFiveEvents(canvas, xPosition, yPosition, eventsList);
+                        switch (eventsList.size()){
+                            case 1:
+                                drawSingleEvent(canvas, xPosition, yPosition, eventsList);
+                            break;
+                            case 2:
+                                drawTwoEvents(canvas, xPosition, yPosition, eventsList);
+                            break;
+
+                            default:
+                                drawEvents(canvas, xPosition, yPosition, eventsList);
                         }
+
                     }
                 }
             }
@@ -999,39 +1001,20 @@ class CompactCalendarController {
     }
 
     //draw 2 eventsByMonthAndYearMap followed by plus indicator to show there are more than 2 eventsByMonthAndYearMap
-    private void drawThreeEvents(Canvas canvas, float xPosition, float yPosition, List<Event> eventsList) {
+    private void drawEvents(Canvas canvas, float xPosition, float yPosition, List<Event> eventsList) {
         // k = size() - 1, but since we don't want to draw more than 2 indicators, we just stop after 2 iterations so we can just hard k = -2 instead
         // we can use the below loop to draw arbitrary eventsByMonthAndYearMap based on the current screen size, for example, larger screens should be able to
         // display more than 2 evens before displaying plus indicator, but don't draw more than 3 indicators for now
-        for (int j = 0, k = -2; j < eventsList.size(); j++, k += 2) {
+        if(isEventOverlap){
+            xIndicatorOffset=2.2f;
+        }
+        for (int j = 0, k = -(eventsList.size()-1); j < eventsList.size(); j++, k += 2) {
             Event event = eventsList.get(j);
             float xStartPosition = xPosition + (xIndicatorOffset * k);
             drawEventIndicatorCircle(canvas, xStartPosition, yPosition, event.getColor());
         }
     }
 
-    private void drawFourEvents(Canvas canvas, float xPosition, float yPosition, List<Event> eventsList) {
-        // k = size() - 1, but since we don't want to draw more than 2 indicators, we just stop after 2 iterations so we can just hard k = -2 instead
-        // we can use the below loop to draw arbitrary eventsByMonthAndYearMap based on the current screen size, for example, larger screens should be able to
-        // display more than 2 evens before displaying plus indicator, but don't draw more than 3 indicators for now
-        for (int j = 0, k = -3; j < eventsList.size(); j++, k += 2) {
-            Event event = eventsList.get(j);
-            float xStartPosition = xPosition + (xIndicatorOffset * k);
-            drawEventIndicatorCircle(canvas, xStartPosition, yPosition, event.getColor());
-        }
-    }
-
-    //draw 2 eventsByMonthAndYearMap followed by plus indicator to show there are more than 2 eventsByMonthAndYearMap
-    private void drawFiveEvents(Canvas canvas, float xPosition, float yPosition, List<Event> eventsList) {
-        // k = size() - 1, but since we don't want to draw more than 2 indicators, we just stop after 2 iterations so we can just hard k = -2 instead
-        // we can use the below loop to draw arbitrary eventsByMonthAndYearMap based on the current screen size, for example, larger screens should be able to
-        // display more than 2 evens before displaying plus indicator, but don't draw more than 3 indicators for now
-        for (int j = 0, k = -4; j < eventsList.size(); j++, k += 2) {
-            Event event = eventsList.get(j);
-            float xStartPosition = xPosition + (xIndicatorOffset * k);
-            drawEventIndicatorCircle(canvas, xStartPosition, yPosition, event.getColor());
-        }
-    }
 
     // zero based indexes used internally so instead of returning range of 1-7 like calendar class
     // it returns 0-6 where 0 is Sunday instead of 1
@@ -1041,21 +1024,21 @@ class CompactCalendarController {
         return dayOfWeek;
     }
 
-    void setDateTextTypeface(Typeface typefaceRegular){
-        if(typefaceRegular!=null) {
+    void setDateTextTypeface(Typeface typefaceRegular) {
+        if (typefaceRegular != null) {
             this.typefaceDateText = typefaceRegular;
         }
     }
 
 
-    void setWeekTextTypeface(Typeface typefaceRegular){
-        if(typefaceRegular!=null) {
+    void setWeekTextTypeface(Typeface typefaceRegular) {
+        if (typefaceRegular != null) {
             this.typefaceWeekText = typefaceRegular;
         }
     }
 
-    void setMonthTextTypeface(Typeface typefaceRegular){
-        if(typefaceRegular!=null) {
+    void setMonthTextTypeface(Typeface typefaceRegular) {
+        if (typefaceRegular != null) {
             this.typefaceMonthText = typefaceRegular;
         }
     }
@@ -1092,7 +1075,7 @@ class CompactCalendarController {
                 break;
             }
             float xPosition = widthPerDay * dayColumn + paddingWidth + paddingLeft + accumulatedScrollOffset.x + offset - paddingRight;
-            float yPosition  = dayRow * heightPerDay + paddingHeight;
+            float yPosition = dayRow * heightPerDay + paddingHeight;
             if (xPosition >= growFactor && (isAnimatingWithExpose || animationStatus == ANIMATE_INDICATORS) || yPosition >= growFactor) {
                 // don't draw days if animating expose or indicators
                 continue;
@@ -1106,17 +1089,17 @@ class CompactCalendarController {
                     dayPaint.setColor(weekDaysTextColor);
                     //change 1 : Week end day color
                     if (isApplyWeekEndColor) {
-                        if (dayColumn == Calendar.SUNDAY-1 || dayColumn == Calendar.SATURDAY-1) {
+                        if (dayColumn == Calendar.SUNDAY - 1 || dayColumn == Calendar.SATURDAY - 1) {
                             dayPaint.setColor(weekEndDaysTextColor);
                         }
                     }
-                    if(dayColumn == 6&&isDisplayMonthName) {
+                    if (dayColumn == 6 && isDisplayMonthName) {
                         Paint monthPaint = dayPaint;
                         monthPaint.setTypeface(typefaceMonthText);
                         monthPaint.setColor(monthNameTextColor);
                         monthPaint.setTextSize(textMonthNameSize);
-                            String monthName = currentCalender.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.getDefault());
-                            canvas.drawText(monthName, xPosition, (dayRow * heightPerDay + paddingHeight) + heightPerDay, monthPaint);
+                        String monthName = currentCalender.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.getDefault());
+                        canvas.drawText(monthName, xPosition, (dayRow * heightPerDay + paddingHeight) + heightPerDay, monthPaint);
                     }
                     dayPaint.setTextSize(textWeekNameSize);
                     dayPaint.setTypeface(typefaceWeekText);

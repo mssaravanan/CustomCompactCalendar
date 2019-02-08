@@ -33,6 +33,8 @@
             app:compactCalendarApplyWeekEndColor="true"
             app:compactCalendarWeekBackgroundStyle="stroke"
             app:compactCalendarDisplayMonthName="false"
+            app:compactCalendarEventCircleOverlap="true"
+            app:compactCalendarEventCircleRadius="@dimen/event_circle_radius"
             app:compactCalendarWeekDaysTextColor="@color/app_text_light_black_color"
             app:compactCalendarWeekEndDaysTextColor="@color/app_blue_color"
             app:compactCalendarWeekNamesBackgroundColor="@color/rating_bar_yellow_color"

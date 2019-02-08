@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item name="circle_scale" format="float" type="dimen">1.25</item>
+    <item name="event_circle_radius" format="float" type="dimen">2.00</item>
     <item name="min_year" format="integer" type="dimen">2018</item>
     <item name="max_year" format="integer" type="dimen">2050</item>
 </resources>
