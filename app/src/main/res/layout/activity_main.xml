@@ -31,7 +31,7 @@
             app:compactCalendarMonthTextSize="@dimen/_12sdp"
             app:compactCalendarWeekTextSize="@dimen/_11sdp"
             app:compactCalendarApplyWeekEndColor="true"
-            app:compactCalendarWeekBackgroundStyle="fill"
+            app:compactCalendarWeekBackgroundStyle="stroke"
             app:compactCalendarDisplayMonthName="false"
             app:compactCalendarWeekDaysTextColor="@color/app_text_light_black_color"
             app:compactCalendarWeekEndDaysTextColor="@color/app_blue_color"

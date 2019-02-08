@@ -896,11 +896,13 @@ class CompactCalendarController {
         weekBgPaint.setColor(weekNamesBackgroundColor);
         if (weekNamesBackgroundStyle == 1) {
             weekBgPaint.setStyle(Paint.Style.FILL);
+            canvas.drawRect(0, 0, width, getHeightPerDay()-paddingHeight/2, weekBgPaint);
         }else {
             weekBgPaint.setStrokeWidth(2.4f);
             weekBgPaint.setStyle(Paint.Style.STROKE);
+            canvas.drawRect(10, 10, width-10, (getHeightPerDay()-paddingHeight/2)-10, weekBgPaint);
         }
-        canvas.drawRect(0, 0, width, getHeightPerDay()-paddingHeight/2, weekBgPaint);
+
         //canvas.drawRect(, 3, width - 15, getHeightPerDay() - 25, weekBgPaint);
 
     }
