@@ -219,7 +219,7 @@ class CompactCalendarController {
         dayPaint.setStyle(Paint.Style.STROKE);
         dayPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
         typefaceDateText = ResourcesCompat.getFont(context, R.font.montserrat_regular);
-        typefaceWeekText = ResourcesCompat.getFont(context, R.font.montserrat_medium);
+        typefaceWeekText = ResourcesCompat.getFont(context, R.font.montserrat_regular);
         typefaceMonthText = ResourcesCompat.getFont(context, R.font.montserrat_medium);
         dayPaint.setTypeface(typefaceDateText);
         dayPaint.setTextSize(textSize);
