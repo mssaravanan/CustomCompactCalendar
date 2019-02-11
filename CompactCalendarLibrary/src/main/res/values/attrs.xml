@@ -46,6 +46,7 @@
 
         <attr name="compactCalendarMaxYear" format="integer"/>
         <attr name="compactCalendarEventCircleRadius" format="float"/>
+        <attr name="compactCalendarEventOverLapOffset" format="float"/>
         <attr name="compactCalendarEventCircleOverlap" format="boolean"/>
         <attr name="compactCalendarCircleScale" format="float"></attr>
         <attr name="compactCalendarDrawRowLine" format="boolean"></attr>

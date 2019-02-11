@@ -112,6 +112,7 @@ class CompactCalendarController {
     private Context mContext;
     private boolean isShowRowLine = false;
     private boolean isEventOverlap=false;
+    private float eventOverlapOffset=1.5f;
     private Typeface typefaceDateText, typefaceMonthText, typefaceWeekText;
     /**
      * Only used in onDrawCurrentMonth to temporarily calculate previous month days
@@ -189,6 +190,7 @@ class CompactCalendarController {
                 isDisplayMonthName = typedArray.getBoolean(R.styleable.CompactCalendarView_compactCalendarDisplayMonthName, false);
                 monthNameTextColor = typedArray.getColor(R.styleable.CompactCalendarView_compactCalendarMonthNameTextColor, calenderTextColor);
                 eventIndicatiorRadius =typedArray.getFloat(R.styleable.CompactCalendarView_compactCalendarEventCircleRadius,eventIndicatiorRadius);
+                eventOverlapOffset=typedArray.getFloat(R.styleable.CompactCalendarView_compactCalendarEventOverLapOffset,eventOverlapOffset);
                 isEventOverlap=typedArray.getBoolean(R.styleable.CompactCalendarView_compactCalendarEventCircleOverlap, false);
             } finally {
                 typedArray.recycle();
@@ -1006,7 +1008,7 @@ class CompactCalendarController {
         // we can use the below loop to draw arbitrary eventsByMonthAndYearMap based on the current screen size, for example, larger screens should be able to
         // display more than 2 evens before displaying plus indicator, but don't draw more than 3 indicators for now
         if(isEventOverlap){
-            xIndicatorOffset=2.2f;
+            xIndicatorOffset=eventOverlapOffset * screenDensity;
         }
         for (int j = 0, k = -(eventsList.size()-1); j < eventsList.size(); j++, k += 2) {
             Event event = eventsList.get(j);
