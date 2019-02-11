@@ -19,7 +19,7 @@ allprojects {
 Add the dependency
 ```jshelllanguage
 dependencies {
-     implementation 'com.github.saran2somu:CustomCompactCalendar:1.0.0'
+     implementation 'com.github.saran2somu:CustomCompactCalendar:master'
 	     }
 ```
 
