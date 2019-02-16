@@ -48,6 +48,7 @@
         <attr name="compactCalendarEventCircleRadius" format="float"/>
         <attr name="compactCalendarEventOverLapOffset" format="float"/>
         <attr name="compactCalendarEventCircleOverlap" format="boolean"/>
+        <attr name="compactCalendarEventOverlapCount" format="integer"/>
         <attr name="compactCalendarCircleScale" format="float"></attr>
         <attr name="compactCalendarDrawRowLine" format="boolean"></attr>
         <attr name="compactCalendarApplyWeekEndColor" format="boolean"></attr>

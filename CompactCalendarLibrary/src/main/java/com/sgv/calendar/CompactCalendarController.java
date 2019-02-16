@@ -114,6 +114,7 @@ class CompactCalendarController {
     private boolean isEventOverlap=false;
     private float eventOverlapOffset=1.5f;
     private Typeface typefaceDateText, typefaceMonthText, typefaceWeekText;
+    private int overLapCount=3;
     /**
      * Only used in onDrawCurrentMonth to temporarily calculate previous month days
      */
@@ -192,6 +193,7 @@ class CompactCalendarController {
                 eventIndicatiorRadius =typedArray.getFloat(R.styleable.CompactCalendarView_compactCalendarEventCircleRadius,eventIndicatiorRadius);
                 eventOverlapOffset=typedArray.getFloat(R.styleable.CompactCalendarView_compactCalendarEventOverLapOffset,eventOverlapOffset);
                 isEventOverlap=typedArray.getBoolean(R.styleable.CompactCalendarView_compactCalendarEventCircleOverlap, false);
+                overLapCount= typedArray.getInt(R.styleable.CompactCalendarView_compactCalendarEventOverlapCount, overLapCount);
             } finally {
                 typedArray.recycle();
             }
@@ -972,17 +974,17 @@ class CompactCalendarController {
                             //yPosition += indicatorOffset;
                         }
 
-                        switch (eventsList.size()){
-                            case 1:
-                                drawSingleEvent(canvas, xPosition, yPosition, eventsList);
-                            break;
-                            case 2:
-                                drawTwoEvents(canvas, xPosition, yPosition, eventsList);
-                            break;
-
-                            default:
-                                drawEvents(canvas, xPosition, yPosition, eventsList);
+                        drawEvents(canvas, xPosition, yPosition, eventsList);
+                        /*if(eventsList.size()==1){
+                            drawSingleEvent(canvas, xPosition, yPosition, eventsList);
+                        }else if(eventsList.size()==2) {
+                            drawTwoEvents(canvas, xPosition, yPosition, eventsList);
                         }
+                        else if(eventsList.size()==3) {
+                            drawThreeEvents(canvas, xPosition, yPosition, eventsList);
+                        }else if(eventsList.size()>3) {
+
+                        }*/
 
                     }
                 }
@@ -1002,17 +1004,29 @@ class CompactCalendarController {
         drawEventIndicatorCircle(canvas, xPosition + (xIndicatorOffset * 1), yPosition, eventsList.get(1).getColor());
     }
 
+    private void drawThreeEvents(Canvas canvas, float xPosition, float yPosition, List<Event> eventsList) {
+        // k = size() - 1, but since we don't want to draw more than 2 indicators, we just stop after 2 iterations so we can just hard k = -2 instead
+        // we can use the below loop to draw arbitrary eventsByMonthAndYearMap based on the current screen size, for example, larger screens should be able to
+        // display more than 2 evens before displaying plus indicator, but don't draw more than 3 indicators for now
+        for (int j = 0, k = -2; j < eventsList.size(); j++, k += 2) {
+            Event event = eventsList.get(j);
+            float xStartPosition = xPosition + (xIndicatorOffset * k);
+            drawEventIndicatorCircle(canvas, xStartPosition, yPosition, event.getColor());
+        }
+    }
+
     //draw 2 eventsByMonthAndYearMap followed by plus indicator to show there are more than 2 eventsByMonthAndYearMap
     private void drawEvents(Canvas canvas, float xPosition, float yPosition, List<Event> eventsList) {
         // k = size() - 1, but since we don't want to draw more than 2 indicators, we just stop after 2 iterations so we can just hard k = -2 instead
         // we can use the below loop to draw arbitrary eventsByMonthAndYearMap based on the current screen size, for example, larger screens should be able to
         // display more than 2 evens before displaying plus indicator, but don't draw more than 3 indicators for now
-        if(isEventOverlap){
-            xIndicatorOffset=eventOverlapOffset * screenDensity;
+        float eventXOffset= xIndicatorOffset;
+        if(isEventOverlap&&eventsList.size()>overLapCount){
+            eventXOffset=eventOverlapOffset * screenDensity;
         }
         for (int j = 0, k = -(eventsList.size()-1); j < eventsList.size(); j++, k += 2) {
             Event event = eventsList.get(j);
-            float xStartPosition = xPosition + (xIndicatorOffset * k);
+            float xStartPosition = xPosition + (eventXOffset * k);
             drawEventIndicatorCircle(canvas, xStartPosition, yPosition, event.getColor());
         }
     }
