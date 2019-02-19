@@ -115,6 +115,7 @@ class CompactCalendarController {
     private float eventOverlapOffset=1.5f;
     private Typeface typefaceDateText, typefaceMonthText, typefaceWeekText;
     private int overLapCount=3;
+    private boolean isUserScroll=false;
     /**
      * Only used in onDrawCurrentMonth to temporarily calculate previous month days
      */
@@ -734,6 +735,7 @@ class CompactCalendarController {
     }
 
     private void performScroll() {
+        isUserScroll=true;
         int targetScroll = monthsScrolledSoFar * width;
         float remainingScrollAfterFingerLifted = targetScroll - accumulatedScrollOffset.x;
         scroller.startScroll((int) accumulatedScrollOffset.x, 0, (int) (remainingScrollAfterFingerLifted), 0,
@@ -788,6 +790,8 @@ class CompactCalendarController {
     }
 
     void setCurrentDate(Date dateTimeMonth) {
+        isUserScroll=false;
+        userSelectedDate=dateTimeMonth;
         distanceX = 0;
         monthsScrolledSoFar = 0;
         accumulatedScrollOffset.x = 0;
@@ -1132,6 +1136,9 @@ class CompactCalendarController {
                 } else if (currentCalender.get(Calendar.DAY_OF_MONTH) == day && isSameMonthAsCurrentCalendar && !isAnimatingWithExpose) {
                     //Draw Selected
                     if (!isCurrentMonthDaySelector()) {
+                        drawDayCircleIndicator(selectedDayIndicatorStyle, canvas, xPosition, yPosition, selectedDayBackgroundColor);
+                        defaultCalenderTextColorToUse = calenderTextColor;
+                    }else if(isCurrentMonthDaySelector()&&!isUserScroll){
                         drawDayCircleIndicator(selectedDayIndicatorStyle, canvas, xPosition, yPosition, selectedDayBackgroundColor);
                         defaultCalenderTextColorToUse = calenderTextColor;
                     }
