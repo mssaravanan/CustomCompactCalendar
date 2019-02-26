@@ -16,6 +16,7 @@ class MainActivity : AppCompatActivity() {
         var eventList = ArrayList<Event>()
         var todayCalender: Calendar = Calendar.getInstance()
 
+
         eventList.add(Event(ContextCompat.getColor(this, R.color.job_red),todayCalender.timeInMillis))
         todayCalender.add(Calendar.DAY_OF_YEAR,1)
         eventList.add(Event(ContextCompat.getColor(this, R.color.color_6),todayCalender.timeInMillis))
@@ -44,5 +45,8 @@ class MainActivity : AppCompatActivity() {
         eventList.add(Event(ContextCompat.getColor(this, R.color.job_green),todayCalender.timeInMillis))
         eventList.add(Event(ContextCompat.getColor(this, R.color.job_blue),todayCalender.timeInMillis))
         compactcalendar_view.addEvents(eventList)
+
+        var locale=Locale.getDefault()
+        compactcalendar_view.setLocale(TimeZone.getDefault(),locale)
     }
 }

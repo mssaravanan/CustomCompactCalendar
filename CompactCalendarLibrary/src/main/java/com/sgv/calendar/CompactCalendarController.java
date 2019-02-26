@@ -221,10 +221,13 @@ class CompactCalendarController {
         dayPaint.setTextAlign(Paint.Align.CENTER);
         dayPaint.setStyle(Paint.Style.STROKE);
         dayPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
-        typefaceDateText = ResourcesCompat.getFont(context, R.font.montserrat_regular);
-        typefaceWeekText = ResourcesCompat.getFont(context, R.font.montserrat_regular);
-        typefaceMonthText = ResourcesCompat.getFont(context, R.font.montserrat_medium);
-        dayPaint.setTypeface(typefaceDateText);
+        if(context!=null) {
+            typefaceDateText = ResourcesCompat.getFont(context, R.font.montserrat_regular);
+            typefaceWeekText = ResourcesCompat.getFont(context, R.font.montserrat_regular);
+            typefaceMonthText = ResourcesCompat.getFont(context, R.font.montserrat_medium);
+            dayPaint.setTypeface(typefaceDateText);
+
+        }
         dayPaint.setTextSize(textSize);
         dayPaint.setColor(calenderTextColor);
         dayPaint.getTextBounds("31", 0, "31".length(), textSizeRect);
